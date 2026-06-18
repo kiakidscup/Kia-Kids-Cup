@@ -53,15 +53,42 @@
             font-weight: 700;
         }
 
-        /* --- 相關單位排版容器 --- */
+        /* --- 相關單位群組排版 --- */
         .partners-container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 20px 100px;
             display: flex;
-            flex-wrap: wrap; /* 空間不夠時自動往下排 */
+            flex-direction: column;
+            gap: 70px; /* 不同群組之間的垂直間距 */
+        }
+
+        .partner-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* 單位角色標題 (只寫一次) */
+        .partner-role {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 45px;
+            letter-spacing: 3px;
+            border-bottom: 2px solid var(--kia-green);
+            padding-bottom: 12px;
+            display: inline-block;
+        }
+
+        /* 單位橫排容器 */
+        .partner-row {
+            display: flex;
+            flex-wrap: wrap; /* 空間不夠時自動換行 */
             justify-content: center;
-            gap: 80px;
+            gap: 60px; /* Logo 之間的左右間距 */
+            width: 100%;
         }
 
         .partner-item {
@@ -69,20 +96,8 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            flex: 1 1 300px; 
-            max-width: 420px;
-        }
-
-        /* 單位角色標題 (指導單位 / 協辦單位) */
-        .partner-role {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 40px;
-            letter-spacing: 2px;
-            border-bottom: 2px solid var(--kia-green);
-            padding-bottom: 12px;
-            display: inline-block;
+            flex: 1 1 280px; 
+            max-width: 380px;
         }
 
         /* --- 持續的 Logo 呼吸漂浮動畫 --- */
@@ -92,29 +107,31 @@
             100% { transform: translateY(0px); }
         }
 
-        /* 讓第二個 Logo 呼吸頻率錯開 */
         .anim-wrapper {
             animation: hoverFloat 4s ease-in-out infinite;
             margin-bottom: 25px;
-        }
-        .partner-item:nth-child(2) .anim-wrapper {
-            animation-delay: 1.5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 140px; /* 給予統一的彈性空間 */
         }
 
-        /* 超連結與 Logo 本體設計 (無外框) */
         .logo-link {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
             outline: none;
         }
         
+        /* 統一高度設定，解決比例不同導致大小不一的問題 */
         .floating-logo {
-            width: 100%;
-            max-width: 280px; 
-            height: auto;
+            height: 120px; /* 強制所有 Logo 高度一致 */
+            width: auto;
+            max-width: 100%; 
+            object-fit: contain; /* 確保不變形 */
             background: transparent;
             border: none; 
-            border-radius: 12px; 
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
         }
 
@@ -127,7 +144,7 @@
 
         /* 中英文下標字體 */
         .partner-title-zh {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #ffffff;
             margin-bottom: 6px;
@@ -135,7 +152,7 @@
         }
         
         .partner-title-en {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-muted); 
             line-height: 1.4;
             font-weight: 500;
@@ -151,8 +168,13 @@
         @media (max-width: 768px) {
             .page-header { padding: 120px 20px 40px; }
             .partners-container { gap: 60px; }
-            .floating-logo { max-width: 240px; }
-            .partner-role { font-size: 1.25rem; margin-bottom: 30px; }
+            .partner-row { gap: 40px; }
+            
+            /* 手機版適度縮小統一高度 */
+            .floating-logo { height: 95px; } 
+            .anim-wrapper { height: 110px; margin-bottom: 20px; }
+
+            .partner-role { font-size: 1.35rem; margin-bottom: 35px; }
             .partner-title-zh { font-size: 1.15rem; }
             .partner-title-en { font-size: 0.85rem; }
         }
@@ -169,26 +191,48 @@
 
     <div class="partners-container">
         
-        <div class="partner-item gsap-stagger">
+        <div class="partner-group gsap-stagger">
             <div class="partner-role">指導單位</div>
-            <div class="anim-wrapper">
-                <a href="https://www.sport.taichung.gov.tw/" target="_blank" class="logo-link">
-                    <img src="台中市政府運動局.png" alt="台中市政府運動局" class="floating-logo">
-                </a>
+            
+            <div class="partner-row">
+
+                <div class="partner-item">
+                    <div class="anim-wrapper" style="animation-delay: 1.3s;">
+                        <a href="https://www.sport.taichung.gov.tw/" target="_blank" class="logo-link">
+                            <img src="台中市政府運動局.png" alt="台中市政府運動局" class="floating-logo">
+                        </a>
+                    </div>
+                    <div class="partner-title-zh">台中市政府運動局</div>
+                    <div class="partner-title-en">Sports Bureau, Taichung City Government</div>
+                </div>
+
+                <div class="partner-item">
+                    <div class="anim-wrapper" style="animation-delay: 0s;">
+                        <a href="https://www.ctfa.com.tw/" target="_blank" class="logo-link">
+                            <img src="ctfa.png" alt="中華民國足球協會" class="floating-logo">
+                        </a>
+                    </div>
+                    <div class="partner-title-zh">中華民國足球協會</div>
+                    <div class="partner-title-en">Chinese Taipei Football Association</div>
+                </div>
+                
             </div>
-            <div class="partner-title-zh">台中市政府運動局</div>
-            <div class="partner-title-en">Sports Bureau, Taichung City Government</div>
         </div>
 
-        <div class="partner-item gsap-stagger">
+        <div class="partner-group gsap-stagger">
             <div class="partner-role">協辦單位</div>
-            <div class="anim-wrapper">
-                <a href="https://www.facebook.com/p/%E8%87%BA%E4%B8%AD%E5%B8%82%E6%B5%B7%E7%B7%9A%E8%B6%B3%E7%90%83%E5%8D%94%E6%9C%83-Taichung-City-Taiwan-61555701383095/?locale=zh_TW" target="_blank" class="logo-link">
-                    <img src="台中市海線足協.png" alt="台中市海線足球協會" class="floating-logo">
-                </a>
+            
+            <div class="partner-row">
+                <div class="partner-item">
+                    <div class="anim-wrapper" style="animation-delay: 2.6s;">
+                        <a href="https://www.facebook.com/p/%E8%87%BA%E4%B8%AD%E5%B8%82%E6%B5%B7%E7%B7%9A%E8%B6%B3%E7%90%83%E5%8D%94%E6%9C%83-Taichung-City-Taiwan-61555701383095/?locale=zh_TW" target="_blank" class="logo-link">
+                            <img src="台中市海線足協.png" alt="台中市海線足球協會" class="floating-logo">
+                        </a>
+                    </div>
+                    <div class="partner-title-zh">台中市海線足球協會</div>
+                    <div class="partner-title-en">Taichung Coastal Football Association</div>
+                </div>
             </div>
-            <div class="partner-title-zh">台中市海線足球協會</div>
-            <div class="partner-title-en">Taichung Coastal Football Association</div>
         </div>
 
     </div>
@@ -213,14 +257,13 @@
             }
 
             // 2. GSAP 頁面載入順序浮現動畫
-            // 抓取所有標記有 .gsap-stagger 的元素，按照順序平滑浮出
             gsap.to(".gsap-stagger", {
                 y: 0,
                 opacity: 1,
                 duration: 1.2,
-                stagger: 0.25, // 每個元素間隔 0.25 秒進場
+                stagger: 0.25, 
                 ease: "power3.out",
-                delay: 0.1 // 稍微延遲讓載入更順暢
+                delay: 0.1 
             });
         });
     </script>
