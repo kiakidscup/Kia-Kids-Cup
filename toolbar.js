@@ -323,6 +323,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <a href="https://www.kia.com/tw/main.html" target="_blank">主辦單位</a>
                 <a href="announcements.html" class="nav-announce">大會公告</a>
                 <a href="live-scores.html" class="nav-scores">即時比分</a>
+                <a href="invitations.html" class="nav-invitations">邀請卡</a>
                 <a href="quest.html" class="nav-quest">闖關卡及說明</a>
                 <a href="partners.html" class="nav-partners">相關單位</a>
             </div>
@@ -344,6 +345,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="https://www.kia.com/tw/main.html" target="_blank">主辦單位</a>
             <a href="announcements.html" class="nav-announce">大會公告</a>
             <a href="live-scores.html" class="nav-scores">即時比分</a>
+            <a href="invitations.html" class="nav-invitations">邀請卡</a>
             <a href="quest.html" class="nav-quest">闖關卡及說明</a>
             <a href="partners.html" class="nav-partners">相關單位</a>
         </div>
