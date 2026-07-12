@@ -142,6 +142,30 @@
             filter: drop-shadow(0 15px 25px rgba(193, 247, 34, 0.35)); 
         }
 
+
+        /* 無圖片單位：以白色大字作為文字 Logo */
+        .text-logo {
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1.15;
+            text-align: center;
+            white-space: nowrap;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        text-shadow 0.3s ease;
+        }
+
+        .logo-link:hover .text-logo,
+        .logo-link:focus .text-logo {
+            transform: scale(1.08);
+            text-shadow: 0 15px 25px rgba(193, 247, 34, 0.35);
+        }
+
         /* 中英文下標字體 */
         .partner-title-zh {
             font-size: 1.25rem;
@@ -172,6 +196,11 @@
             
             /* 手機版適度縮小統一高度 */
             .floating-logo { height: 95px; } 
+            .text-logo {
+                min-height: 95px;
+                font-size: clamp(1.65rem, 8vw, 2.25rem);
+                white-space: normal;
+            }
             .anim-wrapper { height: 110px; margin-bottom: 20px; }
 
             .partner-role { font-size: 1.35rem; margin-bottom: 35px; }
@@ -220,10 +249,7 @@
         </div>
 
         <div class="partner-group gsap-stagger">
-            <div class="partner-role">協辦單位</div>
-            
-            <div class="partner-row">
-                <div class="partner-item">
+            <div class="partner-role">承辦單位</div>
                     <div class="anim-wrapper" style="animation-delay: 2.6s;">
                         <a href="https://www.facebook.com/p/%E8%87%BA%E4%B8%AD%E5%B8%82%E6%B5%B7%E7%B7%9A%E8%B6%B3%E7%90%83%E5%8D%94%E6%9C%83-Taichung-City-Taiwan-61555701383095/?locale=zh_TW" target="_blank" class="logo-link">
                             <img src="台中市海線足協.png" alt="台中市海線足球協會" class="floating-logo">
@@ -231,7 +257,18 @@
                     </div>
                     <div class="partner-title-zh">台中市海線足球協會</div>
                     <div class="partner-title-en">Taichung Coastal Football Association</div>
-                </div>
+            </div>
+        </div>
+
+        <div class="partner-group gsap-stagger">
+            <div class="partner-role">協辦單位</div>
+                    <div class="anim-wrapper" style="animation-delay: 1.3s;">
+                        <a href="https://www.facebook.com/Kia.Taichungshalu/" target="_blank" rel="noopener noreferrer" class="logo-link" aria-label="前往 Kia 創睿汽車 Facebook 粉絲專頁">
+                            <div class="text-logo">Kia 創睿汽車</div>
+                        </a>
+                    </div>
+                    <div class="partner-title-zh">Kia 創睿汽車</div>
+                    <div class="partner-title-en">Kia Chuangrui Motors</div>
             </div>
         </div>
 
