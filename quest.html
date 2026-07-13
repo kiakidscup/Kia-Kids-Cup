@@ -1,33 +1,220 @@
-/* ===============================
-   闖關卡圖片展示區設定
-=============================== */
-.quest-images {
-    width: 100%;
-    margin: 40px 0;
-    display: flex;
-    flex-direction: column; /* 預設手機版上下排列 */
-    gap: 20px; /* 圖片之間的間距 */
-    justify-content: center;
-    align-items: center;
-}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Kia Kid's Cup 小小世界盃 - 闖關卡及關卡說明</title>
+    <link rel="stylesheet" href="style.css">
 
-.quest-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 20px; /* 圖片圓角 */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* 增加一點浮凸陰影感 */
-    object-fit: cover;
-}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
 
-/* ===============================
-   電腦版/平板版調整 (寬度大於 768px 時)
-=============================== */
-@media (min-width: 768px) {
-    .quest-images {
-        flex-direction: row; /* 電腦版改為左右並排 */
-    }
-    
-    .quest-img {
-        width: 48%; /* 讓兩張圖片各佔約一半空間 */
-    }
-}
+    <style>
+        .page-header h1 {
+            font-size: clamp(2.3rem, 6vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        /* ===============================
+           Lenis 平滑滾動設定
+        =============================== */
+        html.lenis { 
+            height: auto; 
+        }
+
+        .lenis.lenis-smooth { 
+            scroll-behavior: auto; 
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] { 
+            overscroll-behavior: contain; 
+        }
+
+        .lenis.lenis-stopped { 
+            overflow: hidden; 
+        }
+
+        .lenis.lenis-scrolling iframe { 
+            pointer-events: none; 
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .quest-container { 
+            text-align: center; 
+        }
+
+        /* ===============================
+           闖關卡圖片展示區設定
+        =============================== */
+        .quest-images {
+            width: 100%;
+            margin: 40px 0;
+            display: flex;
+            flex-direction: column; /* 預設手機版上下排列 */
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quest-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+        }
+
+        /* 電腦版/平板版調整 (寬度大於 768px 時) */
+        @media (min-width: 768px) {
+            .quest-images {
+                flex-direction: row; /* 電腦版改為左右並排 */
+            }
+            
+            .quest-img {
+                width: 48%; /* 讓兩張圖片各佔約一半空間 */
+            }
+        }
+
+        .instructions { 
+            text-align: left; 
+            margin-top: 40px; 
+        }
+
+        .instructions h3 { 
+            color: var(--kia-green); 
+            font-size: 1.8rem; 
+            margin-bottom: 20px; 
+        }
+
+        .instructions ul { 
+            list-style-type: none; 
+        }
+
+        .instructions li { 
+            font-size: 1.2rem; 
+            margin-bottom: 15px; 
+            padding-left: 30px; 
+            position: relative; 
+        }
+
+        .instructions li::before { 
+            content: '✓'; 
+            position: absolute; 
+            left: 0; 
+            color: var(--kia-green); 
+        }
+
+        /* ===============================
+           滑動浮出動畫初始狀態
+        =============================== */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        /* ===============================
+           手機版調整
+        =============================== */
+        @media (max-width: 768px) {
+            .instructions h3 {
+                font-size: 1.5rem;
+            }
+
+            .instructions li {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-header scroll-reveal">
+        <h1>闖關卡及說明</h1>
+        <p>Quest Map</p>
+    </div>
+
+    <div class="container quest-container">
+        <div class="glass-panel scroll-reveal">
+            
+            <div class="quest-images">
+                <img src="闖關卡1.jpg" alt="闖關卡正面" class="quest-img scroll-reveal">
+                <img src="闖關卡2.jpg" alt="闖關卡背面" class="quest-img scroll-reveal">
+            </div>
+
+            <div class="instructions scroll-reveal">
+                <h3>關卡說明</h3>
+                <ul>
+                    <li class="scroll-reveal">領取實體闖關卡後，至各區完成指定足球體驗挑戰。</li>
+                    <li class="scroll-reveal">每完成一項挑戰，即可由關主蓋上專屬通關印章。</li>
+                    <li class="scroll-reveal">集滿 5 個印章，即可至大會服務台兌換摸彩卷，並領取世界盃FIFA的貼紙乙個。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="toolbar.js"></script>
+
+    <script>
+        // =========================================================
+        // 1. 初始化 Lenis 平滑滾動
+        // =========================================================
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: function(t) {
+                return Math.min(1, 1.001 - Math.pow(2, -10 * t));
+            },
+            smoothWheel: true
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        // =========================================================
+        // 2. GSAP 與 ScrollTrigger 連動
+        // =========================================================
+        gsap.registerPlugin(ScrollTrigger);
+
+        lenis.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add(function(time) {
+            lenis.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0, 0);
+
+        // =========================================================
+        // 3. 滑到哪裡就浮出到哪裡
+        // =========================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            gsap.utils.toArray('.scroll-reveal').forEach(function(el) {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.1,
+                    ease: "power3.out"
+                });
+            });
+
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+</html>
