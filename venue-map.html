@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <title>2026 Kia Kid's Cup 小小世界盃 - 會場地圖</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --map-img: url('會場地圖.jpg');
+            --kia-green: #c1f722;
+            --page-dark: #050b14;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            background: var(--page-dark);
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        /* =====================================================
+           全頁微光粒子背景
+        ===================================================== */
+        #bg-particles {
+            position: fixed;
+            inset: 0;
+            z-index: -5;
+            overflow: hidden;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(193, 247, 34, 0.08), transparent 28%),
+                radial-gradient(circle at 85% 35%, rgba(255, 255, 255, 0.045), transparent 28%),
+                radial-gradient(circle at center, #0a1420 0%, var(--page-dark) 78%);
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            background: rgba(193, 247, 34, 0.2);
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) scale(0.5);
+                opacity: 0;
+            }
+            20%, 80% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-5vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* =====================================================
+           地圖主視覺區：延續首頁與邀請卡風格
+        ===================================================== */
+        .map-hero {
+            min-height: 100vh;
+            padding: 140px 24px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            background: var(--page-dark);
+        }
+
+        .map-bg {
+            position: absolute;
+            inset: -30px;
+            z-index: -4;
+            background-image: var(--map-img);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(14px);
+            transform: scale(1.12);
+            opacity: 0.48;
+        }
+
+        .map-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(5, 11, 20, 0.82) 0%, rgba(5, 11, 20, 0.58) 45%, rgba(5, 11, 20, 0.88) 100%),
+                radial-gradient(circle at center, rgba(193, 247, 34, 0.08), transparent 45%);
+        }
+
+        .map-inner {
+            width: min(1180px, 100%);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .map-frame {
+            width: min(100%, 980px);
+            position: relative;
+            padding: clamp(16px, 3vw, 24px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(10, 18, 28, 0.58);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                inset 0 0 0 1px rgba(193, 247, 34, 0.15),
+                inset 0 0 30px rgba(193, 247, 34, 0.05);
+            opacity: 0;
+            transform: translateY(44px);
+        }
+
+        .map-frame::before,
+        .map-frame::after {
+            content: "";
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.9;
+            border: 3px solid var(--kia-green);
+            filter: drop-shadow(0 0 8px rgba(193, 247, 34, 0.6));
+            transition:
+                width 0.3s ease,
+                height 0.3s ease,
+                opacity 0.3s ease,
+                filter 0.3s ease;
+        }
+
+        .map-frame::before {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .map-frame::after {
+            right: 15px;
+            bottom: 15px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .map-frame:hover::before,
+        .map-frame:hover::after {
+            width: 55px;
+            height: 55px;
+            opacity: 1;
+            filter: drop-shadow(0 0 14px rgba(193, 247, 34, 0.9));
+        }
+
+        .map-image {
+            width: auto;
+            max-width: 100%;
+            max-height: calc(100vh - 220px);
+            object-fit: contain;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 18px 46px rgba(0, 0, 0, 0.42);
+            position: relative;
+            z-index: 2;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .map-frame:hover .map-image {
+            transform: scale(1.008);
+        }
+
+        .image-error-message {
+            display: none;
+            width: 100%;
+            min-height: 320px;
+            padding: 40px 24px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #ffffff;
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-weight: 700;
+            letter-spacing: 1px;
+            line-height: 1.8;
+            border-radius: 12px;
+            border: 1px dashed rgba(193, 247, 34, 0.45);
+            background: rgba(5, 11, 20, 0.7);
+        }
+
+        .image-error-message strong {
+            color: var(--kia-green);
+        }
+
+        /* =====================================================
+           RWD
+        ===================================================== */
+        @media (max-width: 768px) {
+            .map-hero {
+                min-height: 100svh;
+                padding: 118px 16px 42px;
+                align-items: flex-start;
+            }
+            .map-frame {
+                width: 100%;
+                padding: 14px;
+                border-radius: 17px;
+            }
+            .map-frame::before,
+            .map-frame::after {
+                width: 34px;
+                height: 34px;
+                border-width: 2px;
+            }
+            .map-frame::before { top: 10px; left: 10px; }
+            .map-frame::after { right: 10px; bottom: 10px; }
+            .map-frame:hover::before,
+            .map-frame:hover::after {
+                width: 40px;
+                height: 40px;
+            }
+            .map-image {
+                width: 100%;
+                max-height: none;
+                border-radius: 9px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .map-hero { padding-left: 12px; padding-right: 12px; }
+            .map-frame { padding: 11px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .particle { animation: none; }
+            .map-frame,
+            .map-image,
+            .map-frame::before,
+            .map-frame::after {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="bg-particles" aria-hidden="true"></div>
+
+    <main>
+        <section class="map-hero" aria-label="Kia Kid's Cup 會場地圖">
+            <div class="map-bg" aria-hidden="true"></div>
+
+            <div class="map-inner">
+                <div class="map-frame">
+                    <img
+                        src="會場地圖.jpg"
+                        alt="2026 Kia Kid's Cup 小小世界盃會場地圖"
+                        class="map-image"
+                        id="mapImage"
+                    >
+
+                    <div class="image-error-message" id="imageErrorMessage">
+                        找不到 <strong>會場地圖.jpg</strong><br>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const bgContainer = document.getElementById("bg-particles");
+            const particleCount = 42;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement("div");
+                particle.className = "particle";
+
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDuration = `${Math.random() * 14 + 8}s`;
+                particle.style.animationDelay = `${Math.random() * 6}s`;
+
+                bgContainer.appendChild(particle);
+            }
+
+            const mapImage = document.getElementById("mapImage");
+            const imageErrorMessage = document.getElementById("imageErrorMessage");
+
+            mapImage.addEventListener("error", () => {
+                mapImage.style.display = "none";
+                imageErrorMessage.style.display = "flex";
+            });
+
+            if (window.gsap) {
+                gsap.to(".map-frame", {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    delay: 0.15
+                });
+            } else {
+                const frame = document.querySelector(".map-frame");
+                frame.style.opacity = "1";
+                frame.style.transform = "translateY(0)";
+            }
+        });
+    </script>
+
+    <script src="toolbar.js"></script>
+</body>
+</html>
