@@ -15,14 +15,8 @@ document.addEventListener("DOMContentLoaded", function() {
             display: flex;
             align-items: center;
             justify-content: flex-start;
-
-            /*
-               電腦版 Logo 高度會用 JS 同步 toolbar 高度
-               這裡先給一個預設高度，避免 JS 還沒執行時過大
-            */
             height: 50px;
             width: auto;
-
             pointer-events: auto;
             opacity: 1;
             transform: translateY(0);
@@ -36,7 +30,8 @@ document.addEventListener("DOMContentLoaded", function() {
             display: block;
             height: 100%;
             width: auto;
-            max-width: 250px;
+            /* 使用 clamp 讓圖片在不同螢幕寬度下自動彈性縮放，避免擋到導覽列 */
+            max-width: clamp(120px, 16vw, 250px);
             object-fit: contain;
             user-select: none;
             -webkit-user-drag: none;
@@ -110,13 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
             z-index: 2001;
             display: flex;
             flex-direction: column;
-
-            /*
-               手機版重點：
-               padding-top 跟叉叉 top: 25px 對齊
-            */
             padding: 25px 34px 40px;
-
             gap: 18px;
             transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: -26px 0 70px rgba(0, 0, 0, 0.55);
@@ -201,52 +190,33 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         /* =========================================================
-           桌機版
+           桌機版與 RWD 微調
         ========================================================= */
 
         @media (min-width: 769px) {
             .toolbar-container {
                 z-index: 2001;
             }
-
             .site-logo-desktop {
                 top: 24px;
                 left: 28px;
             }
-
-            .site-logo-desktop img {
-                max-width: 250px;
-            }
         }
 
         @media (min-width: 1201px) {
-            .site-logo-desktop {
-                left: 32px;
-            }
-
-            .site-logo-desktop img {
-                max-width: 260px;
-            }
+            .site-logo-desktop { left: 32px; }
+            .site-logo-desktop img { max-width: 260px; }
         }
 
         @media (min-width: 1025px) and (max-width: 1200px) {
-            .site-logo-desktop {
-                left: 24px;
-            }
-
-            .site-logo-desktop img {
-                max-width: 220px;
-            }
+            .site-logo-desktop { left: 24px; }
+            .site-logo-desktop img { max-width: 200px; }
         }
 
+        /* 在 769px~1024px 區間大幅縮小 Logo，避免擋住導覽列 */
         @media (min-width: 769px) and (max-width: 1024px) {
-            .site-logo-desktop {
-                left: 20px;
-            }
-
-            .site-logo-desktop img {
-                max-width: 180px;
-            }
+            .site-logo-desktop { left: 16px; }
+            .site-logo-desktop img { max-width: 130px; }
         }
 
         /* =========================================================
@@ -254,21 +224,10 @@ document.addEventListener("DOMContentLoaded", function() {
         ========================================================= */
 
         @media (max-width: 768px) {
-            .toolbar-container {
-                display: none;
-            }
-
-            .site-logo-desktop {
-                display: none;
-            }
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            .mobile-nav {
-                padding-top: 25px;
-            }
+            .toolbar-container { display: none; }
+            .site-logo-desktop { display: none; }
+            .menu-toggle { display: flex; }
+            .mobile-nav { padding-top: 25px; }
         }
 
         @media (max-width: 420px) {
@@ -277,42 +236,25 @@ document.addEventListener("DOMContentLoaded", function() {
                 padding-left: 28px;
                 padding-right: 28px;
             }
-
             .mobile-nav-logo {
                 width: calc(100% - 68px);
                 height: 50px;
                 min-height: 50px;
                 margin-bottom: 28px;
             }
-
-            .mobile-nav-logo img {
-                height: 30px;
-            }
-
-            .mobile-nav a {
-                font-size: 1.04rem;
-            }
+            .mobile-nav-logo img { height: 30px; }
+            .mobile-nav a { font-size: 1.04rem; }
         }
 
         @media (max-width: 360px) {
-            .mobile-nav {
-                padding-left: 24px;
-                padding-right: 24px;
-            }
-
-            .mobile-nav-logo {
-                width: calc(100% - 64px);
-            }
-
-            .mobile-nav-logo img {
-                height: 28px;
-            }
+            .mobile-nav { padding-left: 24px; padding-right: 24px; }
+            .mobile-nav-logo { width: calc(100% - 64px); }
+            .mobile-nav-logo img { height: 28px; }
         }
     </style>
     `;
 
     const toolbarHTML = `
-        <!-- 桌機版 Logo：toolbar 外面，固定在網頁左上角 -->
         <a href="index.html" class="site-logo-desktop" id="siteLogoDesktop" aria-label="Kia Official Partner Logo">
             <img src="white_logo.png" alt="Kia FIFA Official Partner">
         </a>
@@ -324,6 +266,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <a href="announcements.html" class="nav-announce">大會公告</a>
                 <a href="live-scores.html" class="nav-scores">即時比分</a>
                 <a href="invitations.html" class="nav-invitations">邀請卡</a>
+                <a href="venue-map.html" class="nav-map">會場地圖</a>
                 <a href="quest.html" class="nav-quest">闖關卡及說明</a>
                 <a href="partners.html" class="nav-partners">相關單位</a>
             </div>
@@ -336,16 +279,15 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
 
         <div class="mobile-nav" id="mobileNav">
-            <!-- 手機版 Logo：與右上角叉叉平行 -->
             <a href="index.html" class="mobile-nav-logo" aria-label="Kia Official Partner Logo">
                 <img src="white_logo.png" alt="Kia FIFA Official Partner">
             </a>
-
             <a href="index.html" class="nav-index">首頁</a>
             <a href="https://www.kia.com/tw/main.html" target="_blank">主辦單位</a>
             <a href="announcements.html" class="nav-announce">大會公告</a>
             <a href="live-scores.html" class="nav-scores">即時比分</a>
             <a href="invitations.html" class="nav-invitations">邀請卡</a>
+            <a href="venue-map.html" class="nav-map">會場地圖</a>
             <a href="quest.html" class="nav-quest">闖關卡及說明</a>
             <a href="partners.html" class="nav-partners">相關單位</a>
         </div>
@@ -356,9 +298,6 @@ document.addEventListener("DOMContentLoaded", function() {
     document.head.insertAdjacentHTML("beforeend", styleHTML);
     document.body.insertAdjacentHTML("afterbegin", toolbarHTML);
 
-    // =========================================================
-    // 自動判斷當前網頁，加入 active
-    // =========================================================
     const currentPage = window.location.pathname.split("/").pop();
     let activeClass = "nav-index";
     
@@ -368,21 +307,20 @@ document.addEventListener("DOMContentLoaded", function() {
         activeClass = "nav-scores";
     } else if (currentPage === "partners.html") {
         activeClass = "nav-partners";
-    } else if (currentPage === "brand-story.html") {
-        activeClass = "nav-brand";
     } else if (currentPage === "quest.html") {
         activeClass = "nav-quest";
     } else if (currentPage === "announcements.html") {
         activeClass = "nav-announce";
+    } else if (currentPage === "invitations.html") {
+        activeClass = "nav-invitations";
+    } else if (currentPage === "venue-map.html") {
+        activeClass = "nav-map";
     }
 
     document.querySelectorAll(`.${activeClass}`).forEach(el => {
         el.classList.add("active");
     });
 
-    // =========================================================
-    // 手機版開關邏輯
-    // =========================================================
     const menuToggle = document.getElementById("menuToggle");
     const mobileNav = document.getElementById("mobileNav");
     const menuOverlay = document.getElementById("menuOverlay");
@@ -433,10 +371,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // =========================================================
-    // 電腦版 Logo 高度同步 toolbar
-    // 已移除：重疊時自動隱藏 Logo 的功能
-    // =========================================================
     const desktopLogo = document.getElementById("siteLogoDesktop");
     const toolbarContainer = document.getElementById("toolbarContainer");
 
@@ -444,22 +378,16 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!desktopLogo || !toolbarContainer) return;
 
         const isMobile = window.innerWidth <= 768;
-
         if (isMobile) return;
 
         const toolbarRect = toolbarContainer.getBoundingClientRect();
 
-        /*
-           Logo 高度跟 toolbar 一樣高
-           加上上下限，避免 toolbar 高度異常時 Logo 過大或過小
-        */
-        const toolbarHeight = Math.max(38, Math.min(toolbarRect.height, 58));
-        desktopLogo.style.height = toolbarHeight + "px";
-
-        /*
-           垂直位置也跟 toolbar 對齊
-        */
-        desktopLogo.style.top = toolbarRect.top + "px";
+        // 稍微調小 10%，確保不會過度貼齊邊緣而顯得壓迫
+        const toolbarHeight = Math.max(34, Math.min(toolbarRect.height, 58));
+        desktopLogo.style.height = (toolbarHeight * 0.9) + "px";
+        
+        // 垂直位置微調，讓它看起來更置中
+        desktopLogo.style.top = (toolbarRect.top + (toolbarRect.height - toolbarHeight * 0.9) / 2) + "px";
     }
 
     syncDesktopLogoWithToolbar();
