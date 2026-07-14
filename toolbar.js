@@ -297,7 +297,6 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="announcements.html" class="nav-announce">大會公告</a>
             <a href="live-scores.html" class="nav-scores">即時比分</a>
             <a href="invitations.html" class="nav-invitations">邀請卡</a>
-            <a href="venue-map.html" class="nav-map">會場地圖</a>
             <a href="quest.html" class="nav-quest">闖關卡及說明</a>
             <a href="partners.html" class="nav-partners">相關單位</a>
         </div>
