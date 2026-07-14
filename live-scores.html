@@ -201,44 +201,30 @@
         .toggle-hint { font-size: 0.9rem; color: var(--text-muted); font-weight: normal; }
 
         .collapsible-body {
-            max-height: 1000px; 
+            max-height: 2000px; 
             overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1); 
+            transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
             margin-top: 25px;
         }
 
         .collapsible-body.collapsed { max-height: 0; margin-top: 0; }
 
-        /* 分組名單 */
-        .group-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-            gap: 20px; 
-            padding: 10px 0; 
+        /* =========================================================
+            分組名單圖片專屬樣式
+        ========================================================= */
+        .group-image-wrapper {
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
         }
 
-        .group-card { 
-            background: rgba(255, 255, 255, 0.02); 
-            border: 1px solid rgba(255,255,255,0.05); 
-            border-radius: 12px; 
-            padding: 20px; 
-        }
-
-        .group-title { 
-            font-size: 1.2rem; 
-            font-weight: 800; 
-            color: var(--kia-green); 
-            border-bottom: 1px solid rgba(255,255,255,0.08); 
-            padding-bottom: 8px; 
-            margin-bottom: 12px; 
-            text-align: center; 
-        }
-
-        .group-team { 
-            font-size: 1rem; 
-            padding: 6px 0; 
-            color: #d0d5dd; 
-            text-align: center; 
+        .group-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: inline-block;
         }
 
         /* 賽程列表 */
@@ -261,7 +247,7 @@
             border-radius: 20px; 
         }
 
-        /* 桌機版賽程表格樣式 - 配合新欄位順序調整 grid比例 (場次 | 時間 | 場地 | 隊伍A | 比數 | 隊伍B) */
+        /* 桌機版賽程表格樣式 */
         .match-list { 
             display: flex; 
             flex-direction: column; 
@@ -457,7 +443,9 @@
                     <span class="toggle-hint" id="u6-group-body-hint">點擊展開 ▾</span>
                 </div>
                 <div id="u6-group-body" class="collapsible-body collapsed">
-                    <div class="announcement-text" style="padding: 20px 0;">分組名單尚未公布，敬請期待</div>
+                    <div class="group-image-wrapper">
+                        <img src="u6.png" alt="U6 分組名單" class="group-image">
+                    </div>
                 </div>
             </div>
 
@@ -474,7 +462,9 @@
                     <span class="toggle-hint" id="u8-group-body-hint">點擊展開 ▾</span>
                 </div>
                 <div id="u8-group-body" class="collapsible-body collapsed">
-                    <div class="announcement-text" style="padding: 20px 0;">分組名單尚未公布，敬請期待</div>
+                    <div class="group-image-wrapper">
+                        <img src="u8.png" alt="U8 分組名單" class="group-image">
+                    </div>
                 </div>
             </div>
 
@@ -491,7 +481,9 @@
                     <span class="toggle-hint" id="u10-group-body-hint">點擊展開 ▾</span>
                 </div>
                 <div id="u10-group-body" class="collapsible-body collapsed">
-                    <div class="announcement-text" style="padding: 20px 0;">分組名單尚未公布，敬請期待</div>
+                    <div class="group-image-wrapper">
+                        <img src="u10.png" alt="U10 分組名單" class="group-image">
+                    </div>
                 </div>
             </div>
 
@@ -508,7 +500,9 @@
                     <span class="toggle-hint" id="u12-group-body-hint">點擊展開 ▾</span>
                 </div>
                 <div id="u12-group-body" class="collapsible-body collapsed">
-                    <div class="announcement-text" style="padding: 20px 0;">分組名單尚未公布，敬請期待</div>
+                    <div class="group-image-wrapper">
+                        <img src="u12.png" alt="U12 分組名單" class="group-image">
+                    </div>
                 </div>
             </div>
 
@@ -754,8 +748,8 @@
 
                 // 新欄位對應: 日期[0] | 場次[1] | 時間[2] | 場地[3] | 隊伍[4] | 比數[5] | 隊伍[6]
                 const date = cols[0] ? cols[0].trim() : '';
-                const matchNum = cols[1] ? cols[1].trim() : ''; // 更新為[1]
-                const time = cols[2] ? cols[2].trim() : '';     // 更新為[2]
+                const matchNum = cols[1] ? cols[1].trim() : ''; 
+                const time = cols[2] ? cols[2].trim() : '';     
                 const field = cols[3] ? cols[3].trim() : '';    
                 const teamA = cols[4] ? cols[4].trim() : '';
                 const score = cols[5] ? cols[5].trim() : 'VS';  
