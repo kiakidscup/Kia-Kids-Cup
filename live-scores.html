@@ -61,7 +61,7 @@
         }
 
         /* =========================================================
-           自訂高級感下拉選單
+            自訂高級感下拉選單
         ========================================================= */
         .select-container {
             display: flex;
@@ -261,7 +261,7 @@
             border-radius: 20px; 
         }
 
-        /* 桌機版賽程表格樣式 */
+        /* 桌機版賽程表格樣式 - 配合新欄位順序調整 grid比例 (場次 | 時間 | 場地 | 隊伍A | 比數 | 隊伍B) */
         .match-list { 
             display: flex; 
             flex-direction: column; 
@@ -270,7 +270,7 @@
 
         .match-row {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr 2fr 1.2fr 2fr; 
+            grid-template-columns: 1fr 1.2fr 1fr 2fr 1.2fr 2fr; 
             align-items: center;
             padding: 18px 20px;
             background: rgba(255, 255, 255, 0.015);
@@ -331,7 +331,7 @@
         }
 
         /* =========================================================
-           手機版專屬 RWD 排版
+            手機版專屬 RWD 排版
         ========================================================= */
         @media (max-width: 768px) {
             .thick-glass { padding: 20px; }
@@ -457,15 +457,13 @@
                     <span class="toggle-hint" id="u6-group-body-hint">點擊展開 ▾</span>
                 </div>
                 <div id="u6-group-body" class="collapsible-body collapsed">
-                    
                     <div class="announcement-text" style="padding: 20px 0;">分組名單尚未公布，敬請期待</div>
-                    
-                    </div>
+                </div>
             </div>
 
             <div class="thick-glass scroll-reveal">
                 <h2 style="font-size:1.6rem; margin-bottom:25px; font-weight:700;">U6 即時賽程</h2>
-                <div id="u6-schedule"><div class="announcement-text">賽程表尚未公布，敬請期待</div></div>
+                <div id="u6-schedule"><div class="announcement-text">賽程表載入中...</div></div>
             </div>
         </div>
 
@@ -476,15 +474,13 @@
                     <span class="toggle-hint" id="u8-group-body-hint">點擊展開 ▾</span>
                 </div>
                 <div id="u8-group-body" class="collapsible-body collapsed">
-                    
                     <div class="announcement-text" style="padding: 20px 0;">分組名單尚未公布，敬請期待</div>
-                    
-                    </div>
+                </div>
             </div>
 
             <div class="thick-glass scroll-reveal">
                 <h2 style="font-size:1.6rem; margin-bottom:25px; font-weight:700;">U8 即時賽程</h2>
-                <div id="u8-schedule"><div class="announcement-text">賽程表尚未公布，敬請期待</div></div>
+                <div id="u8-schedule"><div class="announcement-text">賽程表載入中...</div></div>
             </div>
         </div>
 
@@ -495,15 +491,13 @@
                     <span class="toggle-hint" id="u10-group-body-hint">點擊展開 ▾</span>
                 </div>
                 <div id="u10-group-body" class="collapsible-body collapsed">
-                    
                     <div class="announcement-text" style="padding: 20px 0;">分組名單尚未公布，敬請期待</div>
-                    
-                    </div>
+                </div>
             </div>
 
             <div class="thick-glass scroll-reveal">
                 <h2 style="font-size:1.6rem; margin-bottom:25px; font-weight:700;">U10 即時賽程</h2>
-                <div id="u10-schedule"><div class="announcement-text">賽程表尚未公布，敬請期待</div></div>
+                <div id="u10-schedule"><div class="announcement-text">賽程表載入中...</div></div>
             </div>
         </div>
 
@@ -514,15 +508,13 @@
                     <span class="toggle-hint" id="u12-group-body-hint">點擊展開 ▾</span>
                 </div>
                 <div id="u12-group-body" class="collapsible-body collapsed">
-                    
                     <div class="announcement-text" style="padding: 20px 0;">分組名單尚未公布，敬請期待</div>
-                    
-                    </div>
+                </div>
             </div>
 
             <div class="thick-glass scroll-reveal">
                 <h2 style="font-size:1.6rem; margin-bottom:25px; font-weight:700;">U12 即時賽程</h2>
-                <div id="u12-schedule"><div class="announcement-text">賽程表尚未公布，敬請期待</div></div>
+                <div id="u12-schedule"><div class="announcement-text">賽程表載入中...</div></div>
             </div>
         </div>
     </div>
@@ -687,27 +679,28 @@
         }
 
         // =========================================================
-        // 8. Google Sheet CSV 來源 (保留空位供未來插入)
+        // 8. Google Sheet CSV 來源 (轉換為匯出格式)
         // =========================================================
+        const SHEET_ID = '12Hx3L0rflcgE2XdJDy3CpEK7G8rWrck--z-8hpD_vl8';
         const SCHEDULE_SOURCES = [
             {
                 key: 'u6',
-                url: '', // TODO: 在此插入 U6 的 Google 試算表 CSV 連結
+                url: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=1228753780`,
                 containerId: 'u6-schedule'
             },
             {
                 key: 'u8',
-                url: '', // TODO: 在此插入 U8 的 Google 試算表 CSV 連結
+                url: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=577965646`,
                 containerId: 'u8-schedule'
             },
             {
                 key: 'u10',
-                url: '', // TODO: 在此插入 U10 的 Google 試算表 CSV 連結
+                url: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=1972763163`,
                 containerId: 'u10-schedule'
             },
             {
                 key: 'u12',
-                url: '', // TODO: 在此插入 U12 的 Google 試算表 CSV 連結
+                url: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=1119769895`,
                 containerId: 'u12-schedule'
             }
         ];
@@ -745,7 +738,7 @@
         }
 
         // =========================================================
-        // 10. 將 CSV 轉成賽程 HTML
+        // 10. 將 CSV 轉成賽程 HTML (根據新欄位順序修改)
         // =========================================================
         function buildScheduleHTML(csvText) {
             const rows = csvText.replace(/\r/g, '').split('\n');
@@ -759,12 +752,13 @@
 
                 if (cols.length < 5) continue;
 
+                // 新欄位對應: 日期[0] | 場次[1] | 時間[2] | 場地[3] | 隊伍[4] | 比數[5] | 隊伍[6]
                 const date = cols[0] ? cols[0].trim() : '';
-                const time = cols[1] ? cols[1].trim() : '';
-                const matchNum = cols[2] ? cols[2].trim() : '';
-                const field = cols[3] ? cols[3].trim() : ''; 
+                const matchNum = cols[1] ? cols[1].trim() : ''; // 更新為[1]
+                const time = cols[2] ? cols[2].trim() : '';     // 更新為[2]
+                const field = cols[3] ? cols[3].trim() : '';    
                 const teamA = cols[4] ? cols[4].trim() : '';
-                const score = cols[5] ? cols[5].trim() : 'VS'; 
+                const score = cols[5] ? cols[5].trim() : 'VS';  
                 const teamB = cols[6] ? cols[6].trim() : '';
                 
                 if (!date && !teamA) continue;
@@ -794,13 +788,14 @@
             for (let date in groupedData) {
                 const matches = groupedData[date];
 
+                // 列表 Header 排版順序更新為: 場次 | 時間 | 場地 | 隊伍 A | 比數 | 隊伍 B
                 htmlContent += `
                     <div class="day-group">
                         <div class="day-label">${date}</div>
                         <div class="match-list">
                             <div class="match-row header-row">
-                                <div class="col-time">時間</div>
                                 <div class="col-match">場次</div>
+                                <div class="col-time">時間</div>
                                 <div class="col-field">場地</div>
                                 <div class="col-team">隊伍 A</div>
                                 <div class="col-score">比數</div>
@@ -815,8 +810,8 @@
 
                     htmlContent += `
                             <div class="match-row">
-                                <div class="col-time">${m.time}</div>
                                 <div class="col-match">${m.matchNum}</div>
+                                <div class="col-time">${m.time}</div>
                                 <div class="col-field">${m.field}</div>
                                 <div class="col-team">${formattedTeamA}</div>
                                 <div class="col-score">${formattedScore}</div>
@@ -852,7 +847,6 @@
         // 11. 單一賽程抓取
         // =========================================================
         async function fetchScheduleSource(source) {
-            // 如果網址尚未填寫，則直接回傳敬請期待的 HTML 內容
             if (!source.url) {
                 return {
                     key: source.key,
@@ -909,7 +903,7 @@
                 if (!hasFirstSuccessfulLoad) {
                     SCHEDULE_SOURCES.forEach(source => {
                         const container = document.getElementById(source.containerId);
-                        container.innerHTML = '<div class="announcement-text">賽程表尚未公布，敬請期待</div>';
+                        container.innerHTML = '<div class="announcement-text">目前無法讀取賽程表，請稍後再試</div>';
                     });
                 }
 
