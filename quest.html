@@ -58,7 +58,7 @@
             width: 100%;
             margin: 40px 0;
             display: flex;
-            flex-direction: column; /* 預設手機版上下排列 */
+            flex-direction: column;
             gap: 20px;
             justify-content: center;
             align-items: center;
@@ -72,14 +72,13 @@
             object-fit: cover;
         }
 
-        /* 電腦版/平板版調整 (寬度大於 768px 時) */
         @media (min-width: 768px) {
             .quest-images {
-                flex-direction: row; /* 電腦版改為左右並排 */
+                flex-direction: row; 
             }
             
             .quest-img {
-                width: 48%; /* 讓兩張圖片各佔約一半空間 */
+                width: 48%; 
             }
         }
 
@@ -89,13 +88,14 @@
         }
 
         .instructions h3 { 
-            color: var(--kia-green); 
+            color: var(--kia-green, #05141f); /* 預設深色，若您有定義CSS變數會自動覆蓋 */
             font-size: 1.8rem; 
             margin-bottom: 20px; 
         }
 
         .instructions ul { 
             list-style-type: none; 
+            padding: 0;
         }
 
         .instructions li { 
@@ -109,7 +109,7 @@
             content: '✓'; 
             position: absolute; 
             left: 0; 
-            color: var(--kia-green); 
+            color: var(--kia-green, #42b72a); 
         }
 
         /* ===============================
@@ -121,17 +121,94 @@
         }
 
         /* ===============================
+           3D 輪播圖 (Coverflow) 設定
+        =============================== */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: clamp(250px, 40vw, 400px);
+            margin: 60px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1200px; /* 創造 3D 景深 */
+        }
+
+        .carousel-track {
+            position: relative;
+            width: clamp(200px, 30vw, 300px);
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+                        opacity 0.6s ease, z-index 0.6s;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 輪播控制按鈕 */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn:hover {
+            background: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev-btn { left: 5%; }
+        .next-btn { right: 5%; }
+
+        /* ===============================
            手機版調整
         =============================== */
         @media (max-width: 768px) {
             .instructions h3 {
                 font-size: 1.5rem;
             }
-
             .instructions li {
                 font-size: 1rem;
                 line-height: 1.7;
             }
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            .prev-btn { left: 2%; }
+            .next-btn { right: 2%; }
         }
     </style>
 </head>
@@ -158,6 +235,19 @@
                     <li class="scroll-reveal">集滿 5 個印章，即可至大會服務台兌換摸彩卷，並領取世界盃FIFA的貼紙乙個。</li>
                 </ul>
             </div>
+
+            <div class="carousel-wrapper scroll-reveal">
+                <button class="carousel-btn prev-btn">❮</button>
+                <div class="carousel-track">
+                    <div class="carousel-slide"><img src="stage1.png" alt="關卡 1"></div>
+                    <div class="carousel-slide"><img src="stage2.png" alt="關卡 2"></div>
+                    <div class="carousel-slide"><img src="stage3.png" alt="關卡 3"></div>
+                    <div class="carousel-slide"><img src="stage4.png" alt="關卡 4"></div>
+                    <div class="carousel-slide"><img src="stage5.png" alt="關卡 5"></div>
+                </div>
+                <button class="carousel-btn next-btn">❯</button>
+            </div>
+
         </div>
     </div>
 
@@ -179,20 +269,17 @@
             lenis.raf(time);
             requestAnimationFrame(raf);
         }
-
         requestAnimationFrame(raf);
 
         // =========================================================
         // 2. GSAP 與 ScrollTrigger 連動
         // =========================================================
         gsap.registerPlugin(ScrollTrigger);
-
         lenis.on('scroll', ScrollTrigger.update);
 
         gsap.ticker.add(function(time) {
             lenis.raf(time * 1000);
         });
-
         gsap.ticker.lagSmoothing(0, 0);
 
         // =========================================================
@@ -212,8 +299,51 @@
                     ease: "power3.out"
                 });
             });
-
             ScrollTrigger.refresh();
+
+            // =========================================================
+            // 4. 3D 關卡輪播圖邏輯 (Coverflow)
+            // =========================================================
+            const slides = document.querySelectorAll('.carousel-slide');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            
+            // 從關卡 3 開始 (Array 索引為 2)
+            let currentIndex = 2; 
+
+            function updateCarousel() {
+                slides.forEach((slide, i) => {
+                    // 計算最短距離以實現無限循環
+                    let offset = (i - currentIndex + 5) % 5;
+                    if (offset > 2) offset -= 5;
+
+                    // 根據位移距離計算 3D 變化
+                    let translateX = offset * 110; // X軸位移比例 (%)
+                    let scale = 1 - Math.abs(offset) * 0.2; // 縮放比例
+                    let rotateY = offset * -25; // 旋轉角度
+                    let zIndex = 5 - Math.abs(offset); // 層級設定 (中間最高)
+                    let opacity = 1 - Math.abs(offset) * 0.4; // 透明度
+
+                    slide.style.transform = `translateX(${translateX}%) scale(${scale}) rotateY(${rotateY}deg)`;
+                    slide.style.zIndex = zIndex;
+                    slide.style.opacity = opacity;
+                });
+            }
+
+            // 初始化輪播圖位置
+            updateCarousel();
+
+            // 下一張 (往右)
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % 5;
+                updateCarousel();
+            });
+
+            // 上一張 (往左)
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + 5) % 5;
+                updateCarousel();
+            });
         });
     </script>
 </body>
