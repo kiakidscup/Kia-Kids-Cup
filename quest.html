@@ -17,28 +17,15 @@
             margin-bottom: 10px;
             letter-spacing: 2px;
         }
+
         /* ===============================
            Lenis 平滑滾動設定
         =============================== */
-        html.lenis { 
-            height: auto; 
-        }
-
-        .lenis.lenis-smooth { 
-            scroll-behavior: auto; 
-        }
-
-        .lenis.lenis-smooth [data-lenis-prevent] { 
-            overscroll-behavior: contain; 
-        }
-
-        .lenis.lenis-stopped { 
-            overflow: hidden; 
-        }
-
-        .lenis.lenis-scrolling iframe { 
-            pointer-events: none; 
-        }
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
 
         body, html {
             height: 100%;
@@ -76,19 +63,21 @@
             .quest-images {
                 flex-direction: row; 
             }
-            
             .quest-img {
                 width: 48%; 
             }
         }
 
+        /* ===============================
+           文字說明區設定
+        =============================== */
         .instructions { 
             text-align: left; 
             margin-top: 40px; 
         }
 
         .instructions h3 { 
-            color: var(--kia-green, #05141f); /* 預設深色，若您有定義CSS變數會自動覆蓋 */
+            color: var(--kia-green, #05141f); 
             font-size: 1.8rem; 
             margin-bottom: 20px; 
         }
@@ -132,7 +121,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            perspective: 1200px; /* 創造 3D 景深 */
+            perspective: 1200px; 
         }
 
         .carousel-track {
@@ -157,12 +146,16 @@
             justify-content: center;
             align-items: center;
             background: #fff;
+            /* 預設加入一點過渡效果，提升點擊時的視覺感受 */
         }
 
         .carousel-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* 防止手機端長按出現選單或拖曳圖片 */
+            -webkit-user-drag: none;
+            user-select: none;
         }
 
         /* 輪播控制按鈕 */
@@ -195,18 +188,9 @@
            手機版調整
         =============================== */
         @media (max-width: 768px) {
-            .instructions h3 {
-                font-size: 1.5rem;
-            }
-            .instructions li {
-                font-size: 1rem;
-                line-height: 1.7;
-            }
-            .carousel-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
+            .instructions h3 { font-size: 1.5rem; }
+            .instructions li { font-size: 1rem; line-height: 1.7; }
+            .carousel-btn { width: 40px; height: 40px; font-size: 1.2rem; }
             .prev-btn { left: 2%; }
             .next-btn { right: 2%; }
         }
@@ -283,7 +267,7 @@
         gsap.ticker.lagSmoothing(0, 0);
 
         // =========================================================
-        // 3. 滑到哪裡就浮出到哪裡
+        // 3. 滑到哪裡就浮出到哪裡 (Scroll Reveal 動畫)
         // =========================================================
         document.addEventListener('DOMContentLoaded', function() {
             gsap.utils.toArray('.scroll-reveal').forEach(function(el) {
@@ -302,12 +286,13 @@
             ScrollTrigger.refresh();
 
             // =========================================================
-            // 4. 3D 關卡輪播圖邏輯 (Coverflow)
+            // 4. 3D 關卡輪播圖邏輯 (包含點擊與手機滑動支援)
             // =========================================================
+            const carouselWrapper = document.querySelector('.carousel-wrapper');
             const slides = document.querySelectorAll('.carousel-slide');
             const prevBtn = document.querySelector('.prev-btn');
             const nextBtn = document.querySelector('.next-btn');
-            
+
             // 從關卡 3 開始 (Array 索引為 2)
             let currentIndex = 2; 
 
@@ -318,32 +303,71 @@
                     if (offset > 2) offset -= 5;
 
                     // 根據位移距離計算 3D 變化
-                    let translateX = offset * 110; // X軸位移比例 (%)
-                    let scale = 1 - Math.abs(offset) * 0.2; // 縮放比例
-                    let rotateY = offset * -25; // 旋轉角度
-                    let zIndex = 5 - Math.abs(offset); // 層級設定 (中間最高)
-                    let opacity = 1 - Math.abs(offset) * 0.4; // 透明度
+                    let translateX = offset * 110; 
+                    let scale = 1 - Math.abs(offset) * 0.2; 
+                    let rotateY = offset * -25; 
+                    let zIndex = 5 - Math.abs(offset); 
+                    let opacity = 1 - Math.abs(offset) * 0.4; 
 
                     slide.style.transform = `translateX(${translateX}%) scale(${scale}) rotateY(${rotateY}deg)`;
                     slide.style.zIndex = zIndex;
                     slide.style.opacity = opacity;
+                    
+                    // 讓當下置中的卡片滑鼠游標維持預設，旁邊的卡片變成手指(提示可點擊)
+                    slide.style.cursor = offset === 0 ? 'default' : 'pointer';
                 });
             }
 
             // 初始化輪播圖位置
             updateCarousel();
 
-            // 下一張 (往右)
+            // --- 點擊旁邊的卡片直接切換 ---
+            slides.forEach((slide, index) => {
+                slide.addEventListener('click', () => {
+                    if (currentIndex !== index) {
+                        currentIndex = index;
+                        updateCarousel();
+                    }
+                });
+            });
+
+            // --- 左右按鈕控制 ---
             nextBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex + 1) % 5;
                 updateCarousel();
             });
 
-            // 上一張 (往左)
             prevBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex - 1 + 5) % 5;
                 updateCarousel();
             });
+
+            // --- 手機版觸控滑動 (Swipe) ---
+            let startX = 0;
+            let endX = 0;
+            const swipeThreshold = 50; 
+
+            carouselWrapper.addEventListener('touchstart', (e) => {
+                startX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            carouselWrapper.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                let diffX = startX - endX;
+
+                if (Math.abs(diffX) > swipeThreshold) {
+                    if (diffX > 0) {
+                        currentIndex = (currentIndex + 1) % 5; // 向左滑 (看下一張)
+                    } else {
+                        currentIndex = (currentIndex - 1 + 5) % 5; // 向右滑 (看上一張)
+                    }
+                    updateCarousel();
+                }
+            }
         });
     </script>
 </body>
